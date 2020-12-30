@@ -39,24 +39,24 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var express = require("express");
 var router = express.Router();
 //Restaurant model
-var Restaurants = require('../../models/Restaurants');
-// @routes POST api/restaurants.
-// Add a new restaurant in DB.
+var Dishes = require('../../models/Dishes');
+// @routes POST api/dishes.
+// Add a new dish to DB.
 router.post('/', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var newRestaurant, restuarants, err_1;
+    var newDish, dishes, err_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                newRestaurant = new Restaurants(req.body);
+                newDish = new Dishes(req.body);
                 _a.label = 1;
             case 1:
                 _a.trys.push([1, 3, , 4]);
-                return [4 /*yield*/, newRestaurant.save()];
+                return [4 /*yield*/, newDish.save()];
             case 2:
-                restuarants = _a.sent();
-                if (!restuarants)
-                    throw Error('Couldt add new restaurant!');
-                res.status(200).json(restuarants);
+                dishes = _a.sent();
+                if (!dishes)
+                    throw Error('Couldt add new dish!');
+                res.status(200).json(dishes);
                 return [3 /*break*/, 4];
             case 3:
                 err_1 = _a.sent();
@@ -66,20 +66,20 @@ router.post('/', function (req, res) { return __awaiter(void 0, void 0, void 0, 
         }
     });
 }); });
-// @routes GET api/restaurants.
-// GET all restaurants.
+// @routes GET api/dishes.
+// GET all dishes.
 router.get('/', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var restaurants, err_2;
+    var dishes, err_2;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, Restaurants.find()];
+                return [4 /*yield*/, Dishes.find()];
             case 1:
-                restaurants = _a.sent();
-                if (!restaurants)
+                dishes = _a.sent();
+                if (!dishes)
                     throw Error('No Items');
-                res.status(200).json(restaurants);
+                res.status(200).json(dishes);
                 return [3 /*break*/, 3];
             case 2:
                 err_2 = _a.sent();
@@ -89,20 +89,20 @@ router.get('/', function (req, res) { return __awaiter(void 0, void 0, void 0, f
         }
     });
 }); });
-// @routes GET api/restaurants.
-// GET single restaurant by id.
+// @routes GET api/rdishes:id.
+// GET single dish by id.
 router.get('/:id', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var restaurant, err_3;
+    var dish, err_3;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, Restaurants.find({ _id: req.params.id })];
+                return [4 /*yield*/, Dishes.find({ _id: req.params.id })];
             case 1:
-                restaurant = _a.sent();
-                if (!restaurant)
+                dish = _a.sent();
+                if (!dish)
                     throw Error('No Items');
-                res.status(200).json(restaurant);
+                res.status(200).json(dish);
                 return [3 /*break*/, 3];
             case 2:
                 err_3 = _a.sent();
@@ -115,17 +115,17 @@ router.get('/:id', function (req, res) { return __awaiter(void 0, void 0, void 0
 // @routes DELETE api/restaurants:id.
 // Delete a restaurant by id.
 router.delete('/:id', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var retaurant, err_4;
+    var dish, err_4;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, Restaurants.findByIdAndDelete(req.params.id)];
+                return [4 /*yield*/, Dishes.findByIdAndDelete(req.params.id)];
             case 1:
-                retaurant = _a.sent();
-                if (!retaurant)
+                dish = _a.sent();
+                if (!dish)
                     throw Error('No Post Found!');
-                res.status(200).json({ msg: "Resaurant has been deleted successfully!" });
+                res.status(200).json({ msg: "Dish has been deleted successfully!" });
                 return [3 /*break*/, 3];
             case 2:
                 err_4 = _a.sent();
