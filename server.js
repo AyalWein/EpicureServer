@@ -27,5 +27,5 @@ app.get('/', function (req, res) {
 app.use('/api/posts', postRoutes);
 app.use('/api/restaurants', RestaurantsRoutes);
 app.listen(5001, function () {
-    console.log('App is listening on port 5001!');
+    console.log('App is listening on port 5001!!!!');
 });
