@@ -28,4 +28,4 @@ var DishSchema = new Schema({
         type: String,
     },
 });
-module.exports = mongoose_1.default.model('Restaurants', DishSchema);
+module.exports = mongoose_1.default.model('Dishes', DishSchema);
