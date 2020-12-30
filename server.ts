@@ -30,7 +30,7 @@ const app: express.Application = express();
 app.use(express.json());
 
 app.get('/', function (req, res) {
-    res.send('Hello Ayal!');
+    res.send('Hello World!!!');
 });
 
 app.use('/api/posts', postRoutes);

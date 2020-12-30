@@ -22,10 +22,10 @@ var app = express();
 //BodyPasrser Middlware
 app.use(express.json());
 app.get('/', function (req, res) {
-    res.send('Hello Ayal!');
+    res.send('Hello World!!!');
 });
 app.use('/api/posts', postRoutes);
 app.use('/api/restaurants', RestaurantsRoutes);
 app.listen(5001, function () {
-    console.log('App is listening on port 5000!');
+    console.log('App is listening on port 5001!');
 });
