@@ -7,7 +7,8 @@ var mongoose_1 = __importDefault(require("mongoose"));
 var Schema = mongoose_1.default.Schema;
 var RestaurantSchema = new Schema({
     chef: {
-        type: String,
+        type: mongoose_1.default.Schema.Types.ObjectId,
+        ref: 'Chefs'
     },
     cuisine: {
         type: String,

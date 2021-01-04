@@ -1,6 +1,7 @@
 import express = require('express');
 
 
+
 const router = express.Router();
 
 //Restaurant model
@@ -28,15 +29,37 @@ router.post('/', async (req, res) => {
 // GET all restaurants.
 
 router.get('/', async (req, res) => {
-    try {
-        const restaurants = await Restaurants.find();
-        if (!restaurants) throw Error('No Items');
-        res.status(200).json(restaurants);
+    const { name, chef, cuisine } = req.query;
+    if (name || chef || cuisine) {
 
-    } catch (err) {
-        res.status(400).json({ msg: err })
+        try {
+            const restaurants = await Restaurants
+                .find({ $or: [{ name: { $regex: ".*" + name + ".*" } }, { chef: { $regex: ".*" + chef + ".*" } }, { cuisine: { $regex: ".*" + cuisine + ".*" } }] })
+                .populate('chef')
+            if (!restaurants) throw Error('No Items');
+            res.status(200).json(restaurants);
+
+        } catch (err) {
+            res.status(400).json({ msg: err })
+
+        }
 
     }
+
+    else {
+
+        try {
+            const restaurants = await Restaurants.find().populate('chef');
+            if (!restaurants) throw Error('No Items');
+            res.status(200).json(restaurants);
+
+        } catch (err) {
+            res.status(400).json({ msg: err })
+
+        }
+    }
+
+
 })
 
 // @routes GET api/restaurants.
@@ -44,7 +67,7 @@ router.get('/', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
     try {
-        const restaurant = await Restaurants.find({ _id: req.params.id });
+        const restaurant = await Restaurants.find({ _id: req.params.id }).populate('chef');
         if (!restaurant) throw Error('No Items');
         res.status(200).json(restaurant);
 
@@ -53,6 +76,8 @@ router.get('/:id', async (req, res) => {
 
     }
 })
+
+
 
 
 // @routes DELETE api/restaurants:id.

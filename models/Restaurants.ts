@@ -3,7 +3,8 @@ const Schema = mongoose.Schema;
 
 const RestaurantSchema = new Schema({
     chef: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Chefs'
     },
     cuisine: {
         type: String,

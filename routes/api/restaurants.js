@@ -69,35 +69,55 @@ router.post('/', function (req, res) { return __awaiter(void 0, void 0, void 0, 
 // @routes GET api/restaurants.
 // GET all restaurants.
 router.get('/', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var restaurants, err_2;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
+    var _a, name, chef, cuisine, restaurants, err_2, restaurants, err_3;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
             case 0:
-                _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, Restaurants.find()];
+                _a = req.query, name = _a.name, chef = _a.chef, cuisine = _a.cuisine;
+                if (!(name || chef || cuisine)) return [3 /*break*/, 5];
+                _b.label = 1;
             case 1:
-                restaurants = _a.sent();
+                _b.trys.push([1, 3, , 4]);
+                return [4 /*yield*/, Restaurants
+                        .find({ $or: [{ name: { $regex: ".*" + name + ".*" } }, { chef: { $regex: ".*" + chef + ".*" } }, { cuisine: { $regex: ".*" + cuisine + ".*" } }] })
+                        .populate('chef')];
+            case 2:
+                restaurants = _b.sent();
                 if (!restaurants)
                     throw Error('No Items');
                 res.status(200).json(restaurants);
-                return [3 /*break*/, 3];
-            case 2:
-                err_2 = _a.sent();
+                return [3 /*break*/, 4];
+            case 3:
+                err_2 = _b.sent();
                 res.status(400).json({ msg: err_2 });
-                return [3 /*break*/, 3];
-            case 3: return [2 /*return*/];
+                return [3 /*break*/, 4];
+            case 4: return [3 /*break*/, 8];
+            case 5:
+                _b.trys.push([5, 7, , 8]);
+                return [4 /*yield*/, Restaurants.find().populate('chef')];
+            case 6:
+                restaurants = _b.sent();
+                if (!restaurants)
+                    throw Error('No Items');
+                res.status(200).json(restaurants);
+                return [3 /*break*/, 8];
+            case 7:
+                err_3 = _b.sent();
+                res.status(400).json({ msg: err_3 });
+                return [3 /*break*/, 8];
+            case 8: return [2 /*return*/];
         }
     });
 }); });
 // @routes GET api/restaurants.
 // GET single restaurant by id.
 router.get('/:id', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var restaurant, err_3;
+    var restaurant, err_4;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, Restaurants.find({ _id: req.params.id })];
+                return [4 /*yield*/, Restaurants.find({ _id: req.params.id }).populate('chef')];
             case 1:
                 restaurant = _a.sent();
                 if (!restaurant)
@@ -105,8 +125,8 @@ router.get('/:id', function (req, res) { return __awaiter(void 0, void 0, void 0
                 res.status(200).json(restaurant);
                 return [3 /*break*/, 3];
             case 2:
-                err_3 = _a.sent();
-                res.status(400).json({ msg: err_3 });
+                err_4 = _a.sent();
+                res.status(400).json({ msg: err_4 });
                 return [3 /*break*/, 3];
             case 3: return [2 /*return*/];
         }
@@ -115,7 +135,7 @@ router.get('/:id', function (req, res) { return __awaiter(void 0, void 0, void 0
 // @routes DELETE api/restaurants:id.
 // Delete a restaurant by id.
 router.delete('/:id', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var retaurant, err_4;
+    var retaurant, err_5;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -128,8 +148,8 @@ router.delete('/:id', function (req, res) { return __awaiter(void 0, void 0, voi
                 res.status(200).json({ msg: "Resaurant has been deleted successfully!" });
                 return [3 /*break*/, 3];
             case 2:
-                err_4 = _a.sent();
-                res.status(400).json({ msg: err_4 });
+                err_5 = _a.sent();
+                res.status(400).json({ msg: err_5 });
                 return [3 /*break*/, 3];
             case 3: return [2 /*return*/];
         }

@@ -11,6 +11,8 @@ const mongoURI = 'mongodb://Ayal:I2nN0lZ9F1Uvdjf9@cluster0-shard-00-00.ezgl8.mon
 
 const RestaurantsRoutes = require('./routes/api/restaurants');
 const DishesRoutes = require('./routes/api/dishes');
+const ChefsRoutes = require('./routes/api/chefs');
+const UserRoutes = require('./routes/api/users');
 
 
 //Connect to DB
@@ -38,7 +40,8 @@ app.get('/', function (req, res) {
 
 app.use('/api/v1/restaurants', RestaurantsRoutes);
 app.use('/api/v1/dishes', DishesRoutes);
-
+app.use('/api/v1/chefs', ChefsRoutes);
+app.use('/api/v1/user', UserRoutes);
 
 
 

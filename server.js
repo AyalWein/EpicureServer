@@ -10,6 +10,8 @@ var mongoURI = 'mongodb://Ayal:I2nN0lZ9F1Uvdjf9@cluster0-shard-00-00.ezgl8.mongo
 //Routes
 var RestaurantsRoutes = require('./routes/api/restaurants');
 var DishesRoutes = require('./routes/api/dishes');
+var ChefsRoutes = require('./routes/api/chefs');
+var UserRoutes = require('./routes/api/users');
 //Connect to DB
 mongoose_1.default.connect(mongoURI, {
     useNewUrlParser: true,
@@ -28,6 +30,8 @@ app.get('/', function (req, res) {
 });
 app.use('/api/v1/restaurants', RestaurantsRoutes);
 app.use('/api/v1/dishes', DishesRoutes);
+app.use('/api/v1/chefs', ChefsRoutes);
+app.use('/api/v1/user', UserRoutes);
 app.listen(5001, function () {
     console.log('App is listening on port 5001!');
 });
