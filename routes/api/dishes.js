@@ -40,59 +40,37 @@ var express = require("express");
 var router = express.Router();
 //Restaurant model
 var Dishes = require('../../models/Dishes');
+//----------------------------------------Routes--------------------------------//
 // @routes POST api/dishes.
 // Add a new dish to DB.
 router.post('/', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var newDish, dishes, err_1;
     return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                newDish = new Dishes(req.body);
-                _a.label = 1;
-            case 1:
-                _a.trys.push([1, 3, , 4]);
-                return [4 /*yield*/, newDish.save()];
-            case 2:
-                dishes = _a.sent();
-                if (!dishes)
-                    throw Error('Couldt add new dish!');
-                res.status(200).json(dishes);
-                return [3 /*break*/, 4];
-            case 3:
-                err_1 = _a.sent();
-                res.status(400).json({ msg: err_1 });
-                return [3 /*break*/, 4];
-            case 4: return [2 /*return*/];
-        }
+        addDish(req, res);
+        return [2 /*return*/];
     });
 }); });
 // @routes GET api/dishes.
 // GET all dishes.
 router.get('/', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var dishes, err_2;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, Dishes.find()];
-            case 1:
-                dishes = _a.sent();
-                if (!dishes)
-                    throw Error('No Items');
-                res.status(200).json(dishes);
-                return [3 /*break*/, 3];
-            case 2:
-                err_2 = _a.sent();
-                res.status(400).json({ msg: err_2 });
-                return [3 /*break*/, 3];
-            case 3: return [2 /*return*/];
+    var _a, name, ingredients;
+    return __generator(this, function (_b) {
+        _a = req.query, name = _a.name, ingredients = _a.ingredients;
+        if (name) {
+            getDishByName(req, res, name);
         }
+        if (ingredients) {
+            getDishByIngredient(req, res, ingredients);
+        }
+        else {
+            getAllDishes(req, res);
+        }
+        return [2 /*return*/];
     });
 }); });
 // @routes GET api/rdishes:id.
 // GET single dish by id.
 router.get('/:id', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var dish, err_3;
+    var dish, err_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -105,8 +83,8 @@ router.get('/:id', function (req, res) { return __awaiter(void 0, void 0, void 0
                 res.status(200).json(dish);
                 return [3 /*break*/, 3];
             case 2:
-                err_3 = _a.sent();
-                res.status(400).json({ msg: err_3 });
+                err_1 = _a.sent();
+                res.status(400).json({ msg: err_1 });
                 return [3 /*break*/, 3];
             case 3: return [2 /*return*/];
         }
@@ -115,7 +93,7 @@ router.get('/:id', function (req, res) { return __awaiter(void 0, void 0, void 0
 // @routes DELETE api/restaurants:id.
 // Delete a restaurant by id.
 router.delete('/:id', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var dish, err_4;
+    var dish, err_2;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -128,11 +106,157 @@ router.delete('/:id', function (req, res) { return __awaiter(void 0, void 0, voi
                 res.status(200).json({ msg: "Dish has been deleted successfully!" });
                 return [3 /*break*/, 3];
             case 2:
-                err_4 = _a.sent();
-                res.status(400).json({ msg: err_4 });
+                err_2 = _a.sent();
+                res.status(400).json({ msg: err_2 });
                 return [3 /*break*/, 3];
             case 3: return [2 /*return*/];
         }
     });
 }); });
+router.delete('/', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var restaurantId;
+    return __generator(this, function (_a) {
+        restaurantId = req.query.restaurantId;
+        if (restaurantId) {
+            deleteByRestaurant(req, res, restaurantId);
+        }
+        else {
+            res.status(400).json({ msg: "Missing parameters" });
+        }
+        return [2 /*return*/];
+    });
+}); });
+//----------------------------------------Functions--------------------------------//
+function addDish(req, res) {
+    return __awaiter(this, void 0, void 0, function () {
+        var newDish, dishes, err_3;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    newDish = new Dishes(req.body);
+                    _a.label = 1;
+                case 1:
+                    _a.trys.push([1, 3, , 4]);
+                    return [4 /*yield*/, newDish.save()];
+                case 2:
+                    dishes = _a.sent();
+                    if (!dishes)
+                        throw Error('Couldt add new dish!');
+                    res.status(200).json(dishes);
+                    return [3 /*break*/, 4];
+                case 3:
+                    err_3 = _a.sent();
+                    res.status(400).json({ msg: err_3 });
+                    return [3 /*break*/, 4];
+                case 4: return [2 /*return*/];
+            }
+        });
+    });
+}
+function getAllDishes(req, res) {
+    return __awaiter(this, void 0, void 0, function () {
+        var dishes, err_4;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 2, , 3]);
+                    return [4 /*yield*/, Dishes.find()];
+                case 1:
+                    dishes = _a.sent();
+                    if (!dishes)
+                        throw Error('No Items');
+                    res.status(200).json(dishes);
+                    return [3 /*break*/, 3];
+                case 2:
+                    err_4 = _a.sent();
+                    res.status(400).json({ msg: err_4 });
+                    return [3 /*break*/, 3];
+                case 3: return [2 /*return*/];
+            }
+        });
+    });
+}
+function getDishByName(req, res, name) {
+    return __awaiter(this, void 0, void 0, function () {
+        var dishes, err_5;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 2, , 3]);
+                    return [4 /*yield*/, Dishes.find({ name: name })];
+                case 1:
+                    dishes = _a.sent();
+                    if (!dishes)
+                        throw Error('No Items');
+                    res.status(200).json(dishes);
+                    return [3 /*break*/, 3];
+                case 2:
+                    err_5 = _a.sent();
+                    res.status(400).json({ msg: err_5 });
+                    return [3 /*break*/, 3];
+                case 3: return [2 /*return*/];
+            }
+        });
+    });
+}
+function getDishByIngredient(req, res, ing) {
+    return __awaiter(this, void 0, void 0, function () {
+        var dishes, err_6;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 2, , 3]);
+                    return [4 /*yield*/, Dishes.aggregate([
+                            { $match: { ingredients: { $regex: ".*" + ing + ".*" } } },
+                            {
+                                $group: {
+                                    _id: "$restaurant.name",
+                                    dishes: {
+                                        $addToSet: {
+                                            "name": "$name",
+                                            "price": "$price",
+                                            "ingredients": "$ingredients"
+                                        }
+                                    }
+                                }
+                            }
+                        ])];
+                case 1:
+                    dishes = _a.sent();
+                    if (!dishes)
+                        throw Error('No Items');
+                    res.status(200).json(dishes);
+                    return [3 /*break*/, 3];
+                case 2:
+                    err_6 = _a.sent();
+                    res.status(400).json({ msg: err_6 });
+                    return [3 /*break*/, 3];
+                case 3: return [2 /*return*/];
+            }
+        });
+    });
+}
+function deleteByRestaurant(req, res, id) {
+    return __awaiter(this, void 0, void 0, function () {
+        var dish, err_7;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 2, , 3]);
+                    return [4 /*yield*/, Dishes.deleteMany({ 'restaurant.id': id })];
+                case 1:
+                    dish = _a.sent();
+                    if (!dish)
+                        throw Error('No Dish Found!');
+                    res.status(200).json({ msg: "Dish has been deleted successfully!" });
+                    return [3 /*break*/, 3];
+                case 2:
+                    err_7 = _a.sent();
+                    res.status(400).json({ msg: err_7 });
+                    return [3 /*break*/, 3];
+                case 3: return [2 /*return*/];
+            }
+        });
+    });
+}
 module.exports = router;

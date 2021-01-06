@@ -1,6 +1,7 @@
 import express = require('express');
 
 
+
 const router = express.Router();
 
 //Restaurant model
@@ -28,14 +29,34 @@ router.post('/', async (req, res) => {
 // GET all restaurants.
 
 router.get('/', async (req, res) => {
-    try {
-        const restaurants = await Restaurants.find();
-        if (!restaurants) throw Error('No Items');
-        res.status(200).json(restaurants);
+    const { name, chef, cuisine } = req.query;
 
-    } catch (err) {
-        res.status(400).json({ msg: err })
+    if (name || chef || cuisine) {
+        console.log("name : " + name + " " + "chef : " + chef + " " + "cuisine: " + cuisine);
 
+        try {
+            const restaurants = await Restaurants.find({ $or: [{ name: { $regex: ".*" + name + ".*" } }, { cuisine: { $regex: ".*" + cuisine + ".*" } }] }).populate('chef')
+            if (!restaurants) throw Error('No Items');
+            res.status(200).json(restaurants);
+
+        } catch (err) {
+            res.status(400).json({ msg: err })
+
+        }
+
+    }
+
+    else {
+
+        try {
+            const restaurants = await Restaurants.find().populate('chef');
+            if (!restaurants) throw Error('No Items');
+            res.status(200).json(restaurants);
+
+        } catch (err) {
+            res.status(400).json({ msg: err })
+
+        }
     }
 })
 
@@ -44,7 +65,7 @@ router.get('/', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
     try {
-        const restaurant = await Restaurants.find({ _id: req.params.id });
+        const restaurant = await Restaurants.find({ _id: req.params.id }).populate('chef');
         if (!restaurant) throw Error('No Items');
         res.status(200).json(restaurant);
 
@@ -53,7 +74,6 @@ router.get('/:id', async (req, res) => {
 
     }
 })
-
 
 // @routes DELETE api/restaurants:id.
 // Delete a restaurant by id.
@@ -69,6 +89,39 @@ router.delete('/:id', async (req, res) => {
 
     }
 });
+
+router.put('/', async (req, res) => {
+    const { chef, restaurantId } = req.query;
+
+    if (chef && restaurantId) {
+        updateChef(req, res, chef, restaurantId)
+
+    }
+});
+
+
+
+//----------------------------------------Functions--------------------------------//
+
+
+//Update restaurants chef
+
+async function updateChef(req, res, chef, restaurantId) {
+
+
+    const filter = { _id: restaurantId };
+    const update = { chef: chef };
+    try {
+        const retaurant = await Restaurants.findOneAndUpdate(filter, update, {
+            returnOriginal: false
+        });
+        if (!retaurant) throw Error("Coudnt't make updates");
+        res.status(200).json({ msg: "Updete completed succesfuly" });
+    } catch (err) {
+        res.status(400).json({ msg: err });
+
+    }
+}
 
 
 module.exports = router;

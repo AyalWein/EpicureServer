@@ -21,8 +21,10 @@ const DishSchema = new Schema({
         type: Number,
     },
     restaurant: {
-        type: String,
+        id: String,
+        name: String,
+        chef: String
     },
 })
 
-module.exports = mongoose.model('Restaurants', DishSchema)
+module.exports = mongoose.model('Dishes', DishSchema)

@@ -25,7 +25,9 @@ var DishSchema = new Schema({
         type: Number,
     },
     restaurant: {
-        type: String,
+        id: String,
+        name: String,
+        chef: String
     },
 });
-module.exports = mongoose_1.default.model('Restaurants', DishSchema);
+module.exports = mongoose_1.default.model('Dishes', DishSchema);
