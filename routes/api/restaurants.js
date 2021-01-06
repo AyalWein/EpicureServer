@@ -75,12 +75,11 @@ router.get('/', function (req, res) { return __awaiter(void 0, void 0, void 0, f
             case 0:
                 _a = req.query, name = _a.name, chef = _a.chef, cuisine = _a.cuisine;
                 if (!(name || chef || cuisine)) return [3 /*break*/, 5];
+                console.log("name : " + name + " " + "chef : " + chef + " " + "cuisine: " + cuisine);
                 _b.label = 1;
             case 1:
                 _b.trys.push([1, 3, , 4]);
-                return [4 /*yield*/, Restaurants
-                        .find({ $or: [{ name: { $regex: ".*" + name + ".*" } }, { chef: { $regex: ".*" + chef + ".*" } }, { cuisine: { $regex: ".*" + cuisine + ".*" } }] })
-                        .populate('chef')];
+                return [4 /*yield*/, Restaurants.find({ $or: [{ name: { $regex: ".*" + name + ".*" } }, { cuisine: { $regex: ".*" + cuisine + ".*" } }] }).populate('chef')];
             case 2:
                 restaurants = _b.sent();
                 if (!restaurants)

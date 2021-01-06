@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var express = require("express");
 var mongoose_1 = __importDefault(require("mongoose"));
 var cors = require('cors');
+var cookies = require("cookie-parser");
 var mongoURI = 'mongodb://Ayal:I2nN0lZ9F1Uvdjf9@cluster0-shard-00-00.ezgl8.mongodb.net:27017,cluster0-shard-00-01.ezgl8.mongodb.net:27017,cluster0-shard-00-02.ezgl8.mongodb.net:27017/ayaldb?ssl=true&replicaSet=atlas-atskgr-shard-0&authSource=admin&retryWrites=true&w=majority';
 //Routes
 var RestaurantsRoutes = require('./routes/api/restaurants');
@@ -24,7 +25,10 @@ var app = express();
 //BodyPasrser Middlware
 app.use(express.json());
 //Allow CORS:
-app.use(cors());
+//app.use(cors())
+app.use(cors({ origin: true, credentials: true }));
+//Cookies parser 
+app.use(cookies());
 app.get('/', function (req, res) {
     res.send('Hello World');
 });

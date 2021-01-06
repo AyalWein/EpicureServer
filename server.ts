@@ -2,6 +2,9 @@ import express = require('express');
 import mongoose from "mongoose";
 
 var cors = require('cors')
+var cookies = require("cookie-parser");
+
+
 
 
 
@@ -31,7 +34,11 @@ const app: express.Application = express();
 app.use(express.json());
 
 //Allow CORS:
-app.use(cors())
+//app.use(cors())
+app.use(cors({ origin: true, credentials: true }));
+
+//Cookies parser 
+app.use(cookies());
 
 app.get('/', function (req, res) {
     res.send('Hello World');

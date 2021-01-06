@@ -1,11 +1,14 @@
 import mongoose from "mongoose";
 
+
 import bcrypt = require('bcrypt');
+
 const Schema = mongoose.Schema;
 
 export interface User extends mongoose.Document {
     password: string,
-    username: string
+    username: string,
+    role: string
 }
 
 

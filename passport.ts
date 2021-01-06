@@ -1,38 +1,43 @@
 import { Strategy as local } from 'passport-local';
 import { Strategy as jwt } from 'passport-jwt';
+import { ExtractJwt } from 'passport-jwt';
+var cookies = require("cookie-parser");
 
 const passport = require('passport');
 // const LocalStrategy = require('passport-local').Srategy;
 // const JwtStrategy = require('passport-jwt').Strategy;
 const User = require('./models/Users');
 
-const cookieExtractor = (req) => {
-    let token = null;
+const cookieExtractor = req => {
+
     if (req && req.cookies) {
-        token = req.cookies["access_token"];
+        const token = req.cookies["access_token"];
+        console.log("token is: " + token);
+        return token
     }
-    return token;
+    else {
+        console.log("no token found");
+        return null;
+    }
+
 }
 
 
-//Authorization with jwt
 passport.use(new jwt({
     jwtFromRequest: cookieExtractor,
-    secretOrKey: "MoveoHls",
-
-
+    secretOrKey: "MoveoHls"
 }, (payload, done) => {
     User.findById({ _id: payload.sub }, (err, user) => {
         if (err) {
-            console.log("err1");
+
             return done(err, false);
         }
         if (user) {
-            console.log("err2");
+
             return done(null, user);
         }
         else {
-            console.log("err3");
+
             return done(null, false);
         }
 

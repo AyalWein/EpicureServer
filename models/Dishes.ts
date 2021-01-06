@@ -21,7 +21,9 @@ const DishSchema = new Schema({
         type: Number,
     },
     restaurant: {
-        type: String,
+        id: String,
+        name: String,
+        chef: String
     },
 })
 
